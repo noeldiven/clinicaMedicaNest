@@ -1,0 +1,85 @@
+  // This is your Prisma schema file,
+  // learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+  // Get a free hosted Postgres database in seconds: `npx create-db`
+
+  generator client {
+    provider = "prisma-client"
+    output   = "../src/generated/prisma"
+  }
+
+  datasource db {
+    provider = "postgresql"
+  }
+
+  enum EstadoCita {
+    PROGRAMADA
+    COMPLETADA
+    CANCELADA
+  }
+
+  enum Role {
+    RECEPCIONISTA
+    MEDICO
+    GERENCIA
+  }
+
+  model Especialidad {
+    id      Int      @id @default(autoincrement())
+    nombre  String   @unique
+    medicos Medico[]
+
+    @@map("especialidades")
+  }
+
+  model Medico {
+    id              Int          @id @default(autoincrement())
+    nombre          String
+    apellidos       String
+    email           String       @unique
+    telefono        String?
+    fechaNacimiento DateTime     @map("fecha_nacimiento")
+    especialidadId  Int          @map("especialidad_id")
+
+    especialidad    Especialidad @relation(fields: [especialidadId], references: [id])
+    citas           Cita[]
+
+    @@map("medicos")
+  }
+
+  model Paciente {
+    id              Int      @id @default(autoincrement())
+    nombre          String
+    apellidos       String
+    email           String   @unique
+    telefono        String?
+    fechaNacimiento DateTime @map("fecha_nacimiento")
+
+    citas           Cita[]
+
+    @@map("pacientes")
+  }
+
+  model Cita {
+    id              Int         @id @default(autoincrement())
+    pacienteId      Int         @map("paciente_id")
+    medicoId        Int         @map("medico_id")
+    fechaHora       DateTime    @map("fecha_hora")
+    motivoConsulta  String?     @map("motivo_consulta")
+    diagnostico     String?
+    estado          EstadoCita  @default(PROGRAMADA)
+
+    paciente        Paciente    @relation(fields: [pacienteId], references: [id])
+    medico          Medico      @relation(fields: [medicoId], references: [id])
+
+    @@map("citas")
+  }
+
+  model User {
+    id       Int    @id @default(autoincrement())
+    email    String @unique
+    password String
+    role     Role
+
+    @@map("users")
+  }
