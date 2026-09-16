@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service.js';
 
 @Injectable()
@@ -23,40 +23,67 @@ export class MedicosService {
   }
 
   async create(data: {
-    nombre: string;
-    apellidos: string;
-    email: string;
-    telefono?: string;
-    fechaNacimiento: Date;
-    especialidadId: number;
-  }) {
-    return this.prisma.medico.create({
-      data,
-      include: {
-        especialidad: true,
-      },
-    });
+  nombre: string;
+  apellidos: string;
+  email: string;
+  telefono?: string;
+  fechaNacimiento: string;
+  especialidadId: number;
+}) {
+  const fechaNacimiento = new Date(data.fechaNacimiento);
+
+  if (fechaNacimiento > new Date()) {
+    throw new BadRequestException(
+      'La fecha de nacimiento no puede ser futura',
+    );
   }
 
-  async update(
-    id: number,
+  return this.prisma.medico.create({
     data: {
-      nombre?: string;
-      apellidos?: string;
-      email?: string;
-      telefono?: string;
-      fechaNacimiento?: Date;
-      especialidadId?: number;
+      ...data,
+      fechaNacimiento,
     },
+    include: {
+      especialidad: true,
+    },
+  });
+}
+
+async update(
+  id: number,
+  data: {
+    nombre?: string;
+    apellidos?: string;
+    email?: string;
+    telefono?: string;
+    fechaNacimiento?: string;
+    especialidadId?: number;
+  },
+) {
+  if (
+    data.fechaNacimiento &&
+    new Date(data.fechaNacimiento) > new Date()
   ) {
-    return this.prisma.medico.update({
-      where: { id },
-      data,
-      include: {
-        especialidad: true,
-      },
-    });
+    throw new BadRequestException(
+      'La fecha de nacimiento no puede ser futura',
+    );
   }
+
+  const updateData = {
+    ...data,
+    ...(data.fechaNacimiento && {
+      fechaNacimiento: new Date(data.fechaNacimiento),
+    }),
+  };
+
+  return this.prisma.medico.update({
+    where: { id },
+    data: updateData,
+    include: {
+      especialidad: true,
+    },
+  });
+}
 
   async remove(id: number) {
     return this.prisma.medico.delete({
