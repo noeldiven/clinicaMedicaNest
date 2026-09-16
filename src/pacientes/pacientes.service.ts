@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service.js';
 
 @Injectable()
@@ -14,34 +14,60 @@ export class PacientesService {
       where: { id },
     });
   }
+async create(data: {
+  nombre: string;
+  apellidos: string;
+  email: string;
+  telefono?: string;
+  fechaNacimiento: string;
+}) {
+  const fechaNacimiento = new Date(data.fechaNacimiento);
 
-  async create(data: {
-    nombre: string;
-    apellidos: string;
-    email: string;
-    telefono?: string;
-    fechaNacimiento: Date;
-  }) {
-    return this.prisma.paciente.create({
-      data,
-    });
+  if (fechaNacimiento > new Date()) {
+    throw new BadRequestException(
+      'La fecha de nacimiento no puede ser futura',
+    );
   }
 
-  async update(
-    id: number,
+  return this.prisma.paciente.create({
     data: {
-      nombre?: string;
-      apellidos?: string;
-      email?: string;
-      telefono?: string;
-      fechaNacimiento?: Date;
+      ...data,
+      fechaNacimiento,
     },
+  });
+}
+
+async update(
+  id: number,
+  data: {
+    nombre?: string;
+    apellidos?: string;
+    email?: string;
+    telefono?: string;
+    fechaNacimiento?: string;
+  },
+) {
+  const updateData = {
+    ...data,
+    ...(data.fechaNacimiento && {
+      fechaNacimiento: new Date(data.fechaNacimiento),
+    }),
+  };
+
+  if (
+    data.fechaNacimiento &&
+    new Date(data.fechaNacimiento) > new Date()
   ) {
-    return this.prisma.paciente.update({
-      where: { id },
-      data,
-    });
+    throw new BadRequestException(
+      'La fecha de nacimiento no puede ser futura',
+    );
   }
+
+  return this.prisma.paciente.update({
+    where: { id },
+    data: updateData,
+  });
+}
 
   async remove(id: number) {
     return this.prisma.paciente.delete({

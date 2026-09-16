@@ -8,6 +8,8 @@ import {
   Post,
   Put,
 } from '@nestjs/common';
+import { CreateMedicoDto } from './dto/create-medico.dto.js';
+import { UpdateMedicoDto } from './dto/update-medico.dto.js';
 import { MedicosService } from './medicos.service.js';
 
 @Controller('medicos')
@@ -31,27 +33,13 @@ export class MedicosController {
   }
 
   @Post()
-  create(@Body() body: any) {
-    return this.medicosService.create({
-      ...body,
-      especialidadId: Number(body.especialidadId),
-      fechaNacimiento: new Date(body.fechaNacimiento),
-    });
+  create(@Body() dto: CreateMedicoDto) {
+    return this.medicosService.create(dto);
   }
 
   @Put(':id')
-  update(@Param('id') id: string, @Body() body: any) {
-    const data = {
-      ...body,
-      ...(body.especialidadId !== undefined && {
-        especialidadId: Number(body.especialidadId),
-      }),
-      ...(body.fechaNacimiento && {
-        fechaNacimiento: new Date(body.fechaNacimiento),
-      }),
-    };
-
-    return this.medicosService.update(Number(id), data);
+  update(@Param('id') id: string, @Body() dto: UpdateMedicoDto) {
+    return this.medicosService.update(Number(id), dto);
   }
 
   @Delete(':id')
