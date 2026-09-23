@@ -3,9 +3,9 @@ import 'dotenv/config';
 import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-
 import { AppModule, ObserveInstrument } from './app.module.js';
 import { PrismaExceptionFilter } from './prisma/prisma-exception.filter.js';
+import { LoggingInterceptor } from './common/logging.interceptor.js';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
@@ -21,6 +21,8 @@ async function bootstrap() {
 
   app.useGlobalFilters(new PrismaExceptionFilter());
 
+  app.useGlobalInterceptors(new LoggingInterceptor());
+
   const config = new DocumentBuilder()
     .setTitle('Clínica Salud Integral')
     .setDescription('API de la clínica, migrada a NestJS')
@@ -29,7 +31,6 @@ async function bootstrap() {
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
-
   SwaggerModule.setup('api/docs', app, document);
 
   await app.listen(process.env.PORT ?? 3000);
