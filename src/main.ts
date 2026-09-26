@@ -2,7 +2,9 @@ import 'dotenv/config';
 
 import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
+import { ConfigService } from '@nestjs/config';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+
 import { AppModule, ObserveInstrument } from './app.module.js';
 import { PrismaExceptionFilter } from './prisma/prisma-exception.filter.js';
 import { LoggingInterceptor } from './common/logging.interceptor.js';
@@ -33,7 +35,9 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api/docs', app, document);
 
-  await app.listen(process.env.PORT ?? 3000);
+  const configService = app.get(ConfigService);
+
+  await app.listen(configService.get<number>('PORT')!);
 }
 
 await bootstrap();
