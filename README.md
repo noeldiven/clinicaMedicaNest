@@ -1,114 +1,334 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# Clínica Médica — NestJS + Prisma
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+API REST para la gestión de una clínica médica, desarrollada con **NestJS**, **TypeScript**, **Prisma** y **PostgreSQL**.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+El proyecto implementa autenticación mediante JWT, autorización por roles, validación de datos, manejo de errores, documentación con Swagger, logging de peticiones y configuración mediante variables de entorno.
 
-## Description
+## Tecnologías
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+* NestJS
+* TypeScript
+* Prisma ORM
+* PostgreSQL
+* JWT
+* Passport
+* Joi
+* Swagger / OpenAPI
+* RxJS
+* pnpm
 
-## Project setup
+## Requisitos
 
-```bash
-$ pnpm install
-```
+* Node.js
+* pnpm
+* PostgreSQL
 
-## Compile and run the project
+## Instalación
+
+Clonar el repositorio e instalar las dependencias:
 
 ```bash
-# development
-$ pnpm run start
-
-# watch mode
-$ pnpm run start:dev
-
-# production mode
-$ pnpm run start:prod
+pnpm install
 ```
 
-## Run tests
+Crear un archivo `.env` en la raíz del proyecto utilizando `.env.example` como referencia.
+
+Ejemplo:
+
+```env
+DATABASE_URL="postgresql://usuario:password@localhost:5433/clinicaSalud"
+JWT_SECRET="una-clave-segura-de-al-menos-10-caracteres"
+PORT=3000
+```
+
+Ejecutar las migraciones de Prisma:
 
 ```bash
-# unit tests
-$ pnpm run test
-
-# e2e tests
-$ pnpm run test:e2e
-
-# test coverage
-$ pnpm run test:cov
+pnpm prisma migrate dev
 ```
 
-## Deployment
+## Ejecución
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
-
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+### Desarrollo
 
 ```bash
-$ pnpm install -g @nestjs/mau
-$ mau deploy
+pnpm start:dev
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+### Compilación
 
-## Observability
+```bash
+pnpm build
+```
 
-In production applications, observability is essential for understanding how your system behaves, detecting issues early, and maintaining reliable performance.
+### Producción
 
-[NestJS Observe](https://observe.nestjs.com) automatically instruments your NestJS application, giving you deep visibility into your system with minimal setup:
+```bash
+pnpm start:prod
+```
 
-- **Distributed tracing:** Follow requests across services and understand how they flow through your system.
-- **Waterfall analysis:** Visualize request execution and identify slow operations, bottlenecks, and unexpected delays.
-- **Performance analysis:** Analyze application performance in real time and quickly pinpoint areas that need optimization.
-- **Metrics:** Track key application and infrastructure metrics to understand system health and performance trends.
-- **Logging:** Centralize and correlate logs with traces and other telemetry to make debugging easier.
-- **Error tracking:** Detect errors quickly and investigate their root causes with the surrounding context.
-- **SLA monitoring:** Track service-level objectives and identify when your application is approaching or exceeding defined thresholds.
-- **Alarms and alerts:** Set up alerts for critical errors, performance degradation, SLA violations, and other anomalies so your team can react quickly.
+La aplicación utiliza el puerto configurado mediante `PORT`. Si no se especifica, utiliza el puerto `3000`.
 
-## Resources
+## Documentación de la API
 
-Check out a few resources that may come in handy when working with NestJS:
+La documentación interactiva está disponible mediante Swagger:
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Auto-instrument your application with [NestJS Observer](https://observer.nestjs.com). Distributed tracing, metrics, and logging made easy. Error tracking and performance monitoring for your NestJS applications.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+```text
+http://localhost:3000/api/docs
+```
 
-## Support
+Desde Swagger se pueden probar los endpoints de autenticación, pacientes, médicos y citas.
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+## Arquitectura
 
-## Stay in touch
+El proyecto está organizado en módulos siguiendo la arquitectura de NestJS:
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+```text
+src/
+├── auth/
+├── citas/
+├── common/
+├── medicos/
+├── pacientes/
+├── prisma/
+├── app.module.ts
+└── main.ts
+```
 
-## License
+### Principales componentes
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+* **Auth:** registro, login y autenticación mediante JWT.
+* **Pacientes:** gestión de pacientes.
+* **Médicos:** gestión de médicos.
+* **Citas:** gestión de citas relacionadas con pacientes.
+* **Prisma:** conexión y acceso a PostgreSQL.
+* **Common:** componentes reutilizables, como el interceptor de logging.
+
+## Pipeline de una petición en NestJS
+
+Uno de los principales aprendizajes del proyecto es entender cómo NestJS procesa una petición HTTP.
+
+Para el endpoint:
+
+```text
+POST /citas
+```
+
+el flujo general es:
+
+```text
+Request
+   │
+   ▼
+JwtAuthGuard
+   │
+   ▼
+RolesGuard
+   │
+   ▼
+LoggingInterceptor
+   │
+   ▼
+ValidationPipe
+   │
+   ▼
+CitasController
+   │
+   ▼
+CitasService
+   │
+   ├──► PacientesService
+   │
+   └──► PrismaService
+   │
+   ▼
+Respuesta
+   │
+   ▼
+LoggingInterceptor
+```
+
+### 1. JwtAuthGuard
+
+Comprueba que la petición tenga un token JWT válido.
+
+Si no existe el token o es inválido, la petición termina con una respuesta `401 Unauthorized`.
+
+### 2. RolesGuard
+
+Comprueba que el usuario autenticado tenga el rol necesario para ejecutar el endpoint.
+
+Esto permite implementar autorización basada en roles.
+
+### 3. LoggingInterceptor
+
+El interceptor global registra el inicio y el tiempo empleado en procesar la petición.
+
+Al finalizar registra información como:
+
+```text
+POST /citas — 25ms
+```
+
+El interceptor utiliza RxJS para observar la respuesta sin modificarla.
+
+### 4. ValidationPipe
+
+Valida el cuerpo de la petición utilizando los DTO definidos para cada recurso.
+
+Si los datos no cumplen las reglas de validación, NestJS devuelve una respuesta `400 Bad Request`.
+
+### 5. Controller y Service
+
+El `CitasController` recibe la petición y delega la lógica de negocio al `CitasService`.
+
+El servicio realiza las operaciones necesarias y, para crear una cita, verifica la existencia del paciente mediante `PacientesService`.
+
+Después utiliza `PrismaService` para acceder a la base de datos.
+
+### 6. PrismaExceptionFilter
+
+Si Prisma genera una excepción conocida, el filtro global la intercepta y la transforma en una respuesta HTTP apropiada.
+
+Esto permite evitar que los errores internos de Prisma lleguen directamente al cliente.
+
+### 7. LoggingInterceptor al finalizar
+
+Antes de enviar la respuesta al cliente, el `LoggingInterceptor` registra el tiempo total que tomó procesar la petición.
+
+De esta manera podemos observar el rendimiento de los endpoints sin modificar su respuesta.
+
+## Flujo de creación de una cita
+
+Ejemplo de una petición:
+
+```http
+POST /citas
+Authorization: Bearer <token>
+Content-Type: application/json
+```
+
+El sistema:
+
+1. Verifica el JWT.
+2. Verifica el rol del usuario.
+3. Registra el inicio de la petición.
+4. Valida el DTO.
+5. El controller recibe la petición.
+6. El service verifica que el paciente exista.
+7. Prisma crea la cita.
+8. Si ocurre un error de Prisma, el filtro lo transforma.
+9. El interceptor registra el tiempo total.
+10. Se devuelve la respuesta HTTP.
+
+## Manejo de configuración
+
+Las variables de entorno son administradas mediante `@nestjs/config`.
+
+Las variables requeridas son:
+
+* `DATABASE_URL`
+* `JWT_SECRET`
+* `PORT`
+
+`Joi` valida la configuración al iniciar la aplicación.
+
+`JWT_SECRET` requiere una longitud mínima de 10 caracteres y `PORT` utiliza `3000` como valor predeterminado.
+
+## Variables de entorno
+
+El repositorio incluye un archivo:
+
+```text
+.env.example
+```
+
+Este archivo contiene únicamente los nombres de las variables necesarias y **no contiene valores reales ni secretos**.
+
+Los valores reales deben mantenerse en `.env`.
+
+## Verificación de la aplicación
+
+Para comprobar el funcionamiento completo mediante Swagger:
+
+1. Ejecutar la aplicación:
+
+```bash
+pnpm start:dev
+```
+
+2. Abrir:
+
+```text
+http://localhost:3000/api/docs
+```
+
+3. Realizar login para obtener un JWT.
+4. Utilizar el botón **Authorize** de Swagger.
+5. Intentar crear una cita para un paciente inexistente.
+
+Resultado esperado:
+
+```text
+404 Not Found
+```
+
+6. Crear una cita utilizando un paciente existente.
+
+Resultado esperado:
+
+```text
+201 Created
+```
+
+7. Revisar la terminal para comprobar el registro del `LoggingInterceptor`.
+
+Ejemplo:
+
+```text
+POST /citas — 20ms
+```
+
+## Scripts principales
+
+```bash
+# Instalar dependencias
+pnpm install
+
+# Desarrollo
+pnpm start:dev
+
+# Compilar
+pnpm build
+
+# Producción
+pnpm start:prod
+
+# Ejecutar pruebas
+pnpm test
+
+# Prisma
+pnpm prisma migrate dev
+```
+
+## Objetivo del proyecto
+
+Este proyecto permitió integrar diferentes características fundamentales de NestJS:
+
+* Módulos
+* Controllers
+* Services
+* DTOs
+* Prisma
+* Guards
+* Interceptors
+* Pipes
+* Exception Filters
+* JWT
+* Roles
+* Swagger
+* Configuración mediante variables de entorno
+* Logging
+* Validación
+
+El objetivo final es comprender cómo estas piezas trabajan juntas dentro del ciclo de vida de una petición HTTP.
